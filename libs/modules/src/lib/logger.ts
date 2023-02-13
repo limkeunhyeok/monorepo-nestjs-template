@@ -3,11 +3,11 @@ import * as winston from 'winston';
 
 export interface LogParams {
   message: string;
-  category: LogCategory;
+  category: LogContext;
   error?: Error;
 }
 
-export const LogCategory = {
+export const LogContext = {
   Initializer: 'Initializer',
   BaseTransfer: 'BaseTransfer',
   UnhandledError: 'UnhandledError',
@@ -16,12 +16,11 @@ export const LogCategory = {
   HttpException: 'HttpException',
   DBFail: 'DBFail',
   Parsing: 'Parsing',
-  AimTaskManage: 'AimTaskManage',
   MessageSend: 'MessageSend',
   MessageReceived: 'MessageReceived',
 } as const;
 
-export type LogCategory = (typeof LogCategory)[keyof typeof LogCategory];
+export type LogContext = (typeof LogContext)[keyof typeof LogContext];
 
 // cross-env로 node_env 설정
 export const winstonLogger = WinstonModule.createLogger({
