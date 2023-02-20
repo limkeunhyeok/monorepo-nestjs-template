@@ -1,6 +1,13 @@
 import * as bcrypt from 'bcrypt';
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { BaseEntity } from './base.entity';
+import { Post } from './post.entity';
 
 @Entity()
 export class User extends BaseEntity {
@@ -15,6 +22,9 @@ export class User extends BaseEntity {
 
   @Column({ type: 'varchar' })
   username: string;
+
+  @OneToMany(() => Post, (post) => post.author)
+  posts: Post[];
 
   @BeforeInsert()
   async hashPassword() {
