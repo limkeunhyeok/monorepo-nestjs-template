@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { BaseEntity } from './base.entity';
+import { Comment } from './comment.entity';
 import { Post } from './post.entity';
 
 @Entity()
@@ -25,6 +26,9 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Post, (post) => post.author)
   posts: Post[];
+
+  @OneToMany(() => Comment, (comment) => comment.author)
+  comments: Comment[];
 
   @BeforeInsert()
   async hashPassword() {

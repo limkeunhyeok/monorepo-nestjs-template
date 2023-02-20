@@ -3,22 +3,18 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { BaseEntity } from './base.entity';
-import { Comment } from './comment.entity';
+import { Post } from './post.entity';
 import { User } from './user.entity';
 
 @Entity()
-export class Post extends BaseEntity {
+export class Comment extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 100 })
-  title: string;
-
-  @Column({ type: 'text' })
+  @Column({ type: 'text', length: 100 })
   contents: string;
 
   @Column({ type: 'boolean', default: true })
@@ -27,10 +23,14 @@ export class Post extends BaseEntity {
   @Column({ type: 'int' })
   authorId: number;
 
+  @Column({ type: 'int' })
+  postId: number;
+
+  @ManyToOne(() => Post, (post) => post.id, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'postId' })
+  post: Post;
+
   @ManyToOne(() => User, (user) => user.id, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'authorId' })
   author: User;
-
-  @OneToMany(() => Comment, (comment) => comment.post)
-  comments: Comment[];
 }
