@@ -7,11 +7,11 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { BaseEntity } from './base.entity';
-import { Comment } from './comment.entity';
-import { User } from './user.entity';
+import { CommentEntity } from './comment.entity';
+import { UserEntity } from './user.entity';
 
 @Entity()
-export class Post extends BaseEntity {
+export class PostEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -27,10 +27,10 @@ export class Post extends BaseEntity {
   @Column({ type: 'int' })
   authorId: number;
 
-  @ManyToOne(() => User, (user) => user.id, { onDelete: 'CASCADE' })
+  @ManyToOne(() => UserEntity, (user) => user.id, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'authorId' })
-  author: User;
+  author: UserEntity;
 
-  @OneToMany(() => Comment, (comment) => comment.post)
-  comments: Comment[];
+  @OneToMany(() => CommentEntity, (comment) => comment.post)
+  comments: CommentEntity[];
 }

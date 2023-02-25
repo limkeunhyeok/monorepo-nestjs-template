@@ -7,11 +7,27 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { BaseEntity } from './base.entity';
-import { Comment } from './comment.entity';
-import { Post } from './post.entity';
+import { CommentEntity } from './comment.entity';
+import { PostEntity } from './post.entity';
+
+export const Role = {
+  ADMIN: 'admin',
+  MEMBER: 'member',
+} as const;
+
+export type Role = (typeof Role)[keyof typeof Role];
+
+export interface User {
+  id: number;
+  email: string;
+  username: string;
+  role: Role;
+  posts?: PostEntity[];
+  comments?: CommentEntity[];
+}
 
 @Entity()
-export class User extends BaseEntity {
+export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -24,11 +40,14 @@ export class User extends BaseEntity {
   @Column({ type: 'varchar' })
   username: string;
 
-  @OneToMany(() => Post, (post) => post.author)
-  posts: Post[];
+  @Column({ type: 'enum', enum: Role, default: Role.MEMBER })
+  role: Role;
 
-  @OneToMany(() => Comment, (comment) => comment.author)
-  comments: Comment[];
+  @OneToMany(() => PostEntity, (post) => post.author)
+  posts: PostEntity[];
+
+  @OneToMany(() => CommentEntity, (comment) => comment.author)
+  comments: CommentEntity[];
 
   @BeforeInsert()
   async hashPassword() {
@@ -37,5 +56,20 @@ export class User extends BaseEntity {
 
   async comparedPassword(attempt: string) {
     return await bcrypt.compare(attempt, this.password);
+  }
+
+  toJson() {
+    const { id, email, username, role } = this;
+    const userJson: User = { id, email, username, role };
+
+    if (this.posts) {
+      userJson.posts = this.posts;
+    }
+
+    if (this.comments) {
+      userJson.comments = this.comments;
+    }
+
+    return userJson;
   }
 }
