@@ -1,5 +1,4 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { EntitySchema } from 'typeorm';
 
 export interface TypeormConfig {
   nodeEnv: string;
@@ -11,7 +10,7 @@ export interface TypeormConfig {
 }
 
 export const getTypeormConfig = (
-  entities: EntitySchema[],
+  entities: any[], // EntitySchema는 타입에러남
   config: TypeormConfig,
 ): TypeOrmModuleOptions => {
   return {

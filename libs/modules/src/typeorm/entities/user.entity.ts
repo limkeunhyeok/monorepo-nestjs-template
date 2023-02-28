@@ -17,13 +17,17 @@ export const Role = {
 
 export type Role = (typeof Role)[keyof typeof Role];
 
-export interface User {
-  id: number;
+export interface UserJson {
+  id?: number;
   email: string;
   username: string;
   role: Role;
   posts?: PostEntity[];
   comments?: CommentEntity[];
+}
+
+export interface User extends UserJson {
+  password: string;
 }
 
 @Entity()
@@ -54,13 +58,13 @@ export class UserEntity extends BaseEntity {
     this.password = await bcrypt.hash(this.password, 10);
   }
 
-  async comparedPassword(attempt: string) {
+  async comparedPassword(attempt: string): Promise<boolean> {
     return await bcrypt.compare(attempt, this.password);
   }
 
   toJson() {
     const { id, email, username, role } = this;
-    const userJson: User = { id, email, username, role };
+    const userJson: UserJson = { id, email, username, role };
 
     if (this.posts) {
       userJson.posts = this.posts;
