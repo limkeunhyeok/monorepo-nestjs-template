@@ -1,4 +1,5 @@
 import {
+  Body,
   Delete,
   Get,
   Injectable,
@@ -8,6 +9,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 
 @Injectable()
@@ -25,12 +27,15 @@ export class UserController {
   }
 
   @Post('/')
-  async createUser(dto: CreateUserDto) {
+  async createUser(@Body() dto: CreateUserDto) {
     return this.userService.createdUser(dto);
   }
 
   @Put('/:userId')
-  async updateUser(@Param(ParseIntPipe) userId: number, dto: CreateUserDto) {
+  async updateUser(
+    @Param(ParseIntPipe) userId: number,
+    @Body() dto: UpdateUserDto,
+  ) {
     return this.userService.updateUser(userId, dto);
   }
 

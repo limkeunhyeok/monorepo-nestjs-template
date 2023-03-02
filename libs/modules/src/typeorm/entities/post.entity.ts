@@ -10,6 +10,16 @@ import { BaseEntity } from './base.entity';
 import { CommentEntity } from './comment.entity';
 import { UserEntity } from './user.entity';
 
+export interface PostJson {
+  id: number;
+  title: string;
+  contents: string;
+  published: boolean;
+  authorId: number;
+  author?: UserEntity;
+  comments?: CommentEntity[];
+}
+
 @Entity()
 export class PostEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -33,4 +43,19 @@ export class PostEntity extends BaseEntity {
 
   @OneToMany(() => CommentEntity, (comment) => comment.post)
   comments: CommentEntity[];
+
+  toJson() {
+    const { id, title, contents, published, authorId } = this;
+    const postJson: PostJson = { id, title, contents, published, authorId };
+
+    if (this.author) {
+      postJson.author = this.author;
+    }
+
+    if (this.comments) {
+      postJson.comments = this.comments;
+    }
+
+    return postJson;
+  }
 }

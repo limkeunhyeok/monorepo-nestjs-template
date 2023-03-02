@@ -15,8 +15,10 @@ export class UserService {
     return userEntities.map((userEntity) => userEntity.toJson());
   }
 
-  async getUserById(id: number) {
-    const userEntity = await this.userRepository.findOneByOrFail({ id });
+  async getUserById(userId: number) {
+    const userEntity = await this.userRepository.findOneByOrFail({
+      id: userId,
+    });
     return userEntity.toJson();
   }
 
@@ -25,8 +27,10 @@ export class UserService {
     return userEntity.toJson();
   }
 
-  async updateUser(id: number, dto: UserInfo) {
-    const userEntity = await this.userRepository.findOneByOrFail({ id });
+  async updateUser(userId: number, dto: UserInfo) {
+    const userEntity = await this.userRepository.findOneByOrFail({
+      id: userId,
+    });
     const updatedUser = await this.userRepository.save({
       ...userEntity,
       ...dto,
@@ -34,9 +38,11 @@ export class UserService {
     return updatedUser.toJson();
   }
 
-  async deleteUser(id: number) {
-    const userEntity = await this.userRepository.findOneByOrFail({ id });
-    await this.userRepository.delete({ id });
+  async deleteUser(userId: number) {
+    const userEntity = await this.userRepository.findOneByOrFail({
+      id: userId,
+    });
+    await this.userRepository.delete({ id: userId });
     return userEntity.toJson();
   }
 }
