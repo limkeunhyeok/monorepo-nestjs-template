@@ -1,7 +1,7 @@
-import { Get, Injectable, Param, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { PostService } from './post.service';
 
-@Injectable()
+@Controller('/posts')
 export class PostController {
   constructor(private readonly postService: PostService) {}
 

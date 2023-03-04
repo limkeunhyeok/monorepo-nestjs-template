@@ -1,8 +1,8 @@
 import {
   Body,
+  Controller,
   Delete,
   Get,
-  Injectable,
   Param,
   ParseIntPipe,
   Post,
@@ -12,7 +12,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 
-@Injectable()
+@Controller('/users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -22,7 +22,7 @@ export class UserController {
   }
 
   @Get('/:userId')
-  async getUserById(@Param(ParseIntPipe) userId: number) {
+  async getUserById(@Param('userId', ParseIntPipe) userId: number) {
     return this.userService.getUserById(userId);
   }
 
@@ -33,14 +33,14 @@ export class UserController {
 
   @Put('/:userId')
   async updateUser(
-    @Param(ParseIntPipe) userId: number,
+    @Param('userId', ParseIntPipe) userId: number,
     @Body() dto: UpdateUserDto,
   ) {
     return this.userService.updateUser(userId, dto);
   }
 
   @Delete('/:userId')
-  async deleteUser(@Param(ParseIntPipe) userId: number) {
+  async deleteUser(@Param('userId', ParseIntPipe) userId: number) {
     return this.userService.deleteUser(userId);
   }
 }

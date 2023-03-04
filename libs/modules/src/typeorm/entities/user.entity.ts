@@ -35,7 +35,7 @@ export interface User extends UserJson {
 
 export type UserInfo = Omit<User, 'id'>;
 
-@Entity()
+@Entity('user')
 export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -76,33 +76,12 @@ export class UserEntity extends BaseEntity {
     return bcrypt.compareSync(attempt, this.password);
   }
 
-  toJson() {
-    const {
-      id,
-      email,
-      username,
-      role,
-      loginFailCount,
-      latestTryLoginDate,
-      isLock,
-    } = this;
-    const userJson: UserJson = {
-      id,
-      email,
-      username,
-      role,
-      loginFailCount,
-      latestTryLoginDate,
-      isLock,
+  toJson(): UserJson {
+    const userJson: User = {
+      ...this,
     };
 
-    if (this.posts) {
-      userJson.posts = this.posts;
-    }
-
-    if (this.comments) {
-      userJson.comments = this.comments;
-    }
+    delete userJson.password;
 
     return userJson;
   }

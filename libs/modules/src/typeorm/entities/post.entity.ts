@@ -20,7 +20,7 @@ export interface PostJson {
   comments?: CommentEntity[];
 }
 
-@Entity()
+@Entity('post')
 export class PostEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;

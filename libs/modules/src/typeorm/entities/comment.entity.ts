@@ -9,12 +9,12 @@ import { BaseEntity } from './base.entity';
 import { PostEntity } from './post.entity';
 import { UserEntity } from './user.entity';
 
-@Entity()
+@Entity('comment')
 export class CommentEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'text', length: 100 })
+  @Column({ type: 'text' })
   contents: string;
 
   @Column({ type: 'boolean', default: true })

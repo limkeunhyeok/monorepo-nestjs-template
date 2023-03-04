@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:15.1
+    restart: 'unless-stopped'
+    expose:
+      - '5432'
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: typeorm-template
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password

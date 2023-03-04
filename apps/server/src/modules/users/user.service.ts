@@ -1,7 +1,9 @@
-import { UserEntity, UserInfo } from '@common/modules/typeorm';
+import { UserEntity } from '@common/modules/typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -22,19 +24,23 @@ export class UserService {
     return userEntity.toJson();
   }
 
-  async createdUser(dto: UserInfo) {
-    const userEntity = await this.userRepository.save(dto);
+  async createdUser(dto: CreateUserDto) {
+    const userEntity = await this.userRepository.create({ ...dto });
+    await this.userRepository.save(userEntity);
     return userEntity.toJson();
   }
 
-  async updateUser(userId: number, dto: UserInfo) {
-    const userEntity = await this.userRepository.findOneByOrFail({
+  async updateUser(userId: number, dto: UpdateUserDto) {
+    const hasUser = await this.userRepository.findOneByOrFail({
       id: userId,
     });
-    const updatedUser = await this.userRepository.save({
-      ...userEntity,
+
+    const updatedUser = await this.userRepository.create({
+      ...hasUser,
       ...dto,
     });
+
+    await this.userRepository.save(updatedUser);
     return updatedUser.toJson();
   }
 

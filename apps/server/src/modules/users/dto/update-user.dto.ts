@@ -1,7 +1,7 @@
-import { Role, UserInfo } from '@common/modules/typeorm';
+import { Role } from '@common/modules/typeorm';
 import { IsEmail, IsEnum, IsString } from 'class-validator';
 
-export class UpdateUserDto implements UserInfo {
+export class UpdateUserDto {
   @IsString()
   @IsEmail()
   email: string;
