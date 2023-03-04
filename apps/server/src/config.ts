@@ -31,6 +31,8 @@ class ServerConfig {
   typeormHost = process.env.TYPEORM_HOST || '127.0.0.1';
   typeormUser = process.env.TYPEORM_USER || 'admin';
   typeormPass = process.env.TYPEORM_PASS || 'password';
+
+  jwtSecret = process.env.JWT_SECRET || 'keyboardCat';
 }
 
 export const serverConfig = new ServerConfig();

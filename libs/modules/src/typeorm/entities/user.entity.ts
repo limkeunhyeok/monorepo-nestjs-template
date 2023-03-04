@@ -22,6 +22,9 @@ export interface UserJson {
   email: string;
   username: string;
   role: Role;
+  loginFailCount?: number;
+  latestTryLoginDate?: Date | string;
+  isLock?: boolean;
   posts?: PostEntity[];
   comments?: CommentEntity[];
 }
@@ -49,6 +52,15 @@ export class UserEntity extends BaseEntity {
   @Column({ type: 'enum', enum: Role, default: Role.MEMBER })
   role: Role;
 
+  @Column({ type: 'int', default: 0 })
+  loginFailCount: number;
+
+  @Column({ type: 'timestamptz', default: new Date() })
+  latestTryLoginDate: Date;
+
+  @Column({ type: 'bool', default: false })
+  isLock: boolean;
+
   @OneToMany(() => PostEntity, (post) => post.author)
   posts: PostEntity[];
 
@@ -65,8 +77,24 @@ export class UserEntity extends BaseEntity {
   }
 
   toJson() {
-    const { id, email, username, role } = this;
-    const userJson: UserJson = { id, email, username, role };
+    const {
+      id,
+      email,
+      username,
+      role,
+      loginFailCount,
+      latestTryLoginDate,
+      isLock,
+    } = this;
+    const userJson: UserJson = {
+      id,
+      email,
+      username,
+      role,
+      loginFailCount,
+      latestTryLoginDate,
+      isLock,
+    };
 
     if (this.posts) {
       userJson.posts = this.posts;
