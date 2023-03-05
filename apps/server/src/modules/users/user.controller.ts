@@ -1,3 +1,4 @@
+import { Role } from '@common/modules/typeorm';
 import {
   Body,
   Controller,
@@ -7,12 +8,15 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGurad } from '../auth/auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 
 @Controller('/users')
+@UseGuards(AuthGurad([Role.ADMIN]))
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -23,7 +27,7 @@ export class UserController {
 
   @Get('/:userId')
   async getUserById(@Param('userId', ParseIntPipe) userId: number) {
-    return this.userService.getUserById(userId);
+    return this.userService.getUserByQuery({ id: userId });
   }
 
   @Post('/')

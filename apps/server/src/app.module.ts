@@ -15,6 +15,7 @@ import {
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { serverConfig } from './config';
+import { AuthMiddleware } from './modules/auth/auth.middleware';
 import { AuthModule } from './modules/auth/auth.module';
 import { PostModule } from './modules/posts/post.module';
 import { UserModule } from './modules/users/user.module';
@@ -24,8 +25,8 @@ import { UserModule } from './modules/users/user.module';
     TypeOrmModule.forRoot(
       getTypeormConfig([UserEntity, PostEntity, CommentEntity], serverConfig),
     ),
-    AuthModule,
     UserModule,
+    AuthModule,
     PostModule,
   ],
 })
@@ -37,6 +38,9 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(LoggingMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.ALL })
+      .apply(AuthMiddleware)
+      .exclude({ path: '/auth/login', method: RequestMethod.POST })
       .forRoutes({ path: '*', method: RequestMethod.ALL });
   }
 }

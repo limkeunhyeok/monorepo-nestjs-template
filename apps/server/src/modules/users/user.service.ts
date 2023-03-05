@@ -1,7 +1,7 @@
 import { UserEntity } from '@common/modules/typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -22,6 +22,11 @@ export class UserService {
       id: userId,
     });
     return userEntity.toJson();
+  }
+
+  async getUserByQuery(query: FindOptionsWhere<UserEntity>) {
+    const userEntity = await this.userRepository.findOneByOrFail(query);
+    return userEntity;
   }
 
   async createdUser(dto: CreateUserDto) {
