@@ -24,7 +24,7 @@ export class AuthMiddleware implements NestMiddleware {
         id: decoded.userId,
       });
 
-      req['user'] = { ...user.toJson() };
+      req['user'] = { userId: user.id, role: user.role };
       return next();
     }
 

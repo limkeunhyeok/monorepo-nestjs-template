@@ -43,19 +43,4 @@ export class PostEntity extends BaseEntity {
 
   @OneToMany(() => CommentEntity, (comment) => comment.post)
   comments: CommentEntity[];
-
-  toJson() {
-    const { id, title, contents, published, authorId } = this;
-    const postJson: PostJson = { id, title, contents, published, authorId };
-
-    if (this.author) {
-      postJson.author = this.author;
-    }
-
-    if (this.comments) {
-      postJson.comments = this.comments;
-    }
-
-    return postJson;
-  }
 }
