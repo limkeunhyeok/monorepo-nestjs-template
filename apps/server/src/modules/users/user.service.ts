@@ -17,13 +17,6 @@ export class UserService {
     return userEntities.map((userEntity) => userEntity.toJson());
   }
 
-  async getUserById(userId: number) {
-    const userEntity = await this.userRepository.findOneByOrFail({
-      id: userId,
-    });
-    return userEntity.toJson();
-  }
-
   async getUserByQuery(query: FindOptionsWhere<UserEntity>) {
     const userEntity = await this.userRepository.findOneByOrFail(query);
     return userEntity;
