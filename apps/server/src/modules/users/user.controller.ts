@@ -32,7 +32,7 @@ export class UserController {
 
   @Post('/')
   async createUser(@Body() dto: CreateUserDto) {
-    return this.userService.createdUser(dto);
+    return this.userService.createUser(dto);
   }
 
   @Put('/:userId')

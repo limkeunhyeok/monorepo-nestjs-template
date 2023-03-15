@@ -22,7 +22,7 @@ export class UserService {
     return userEntity;
   }
 
-  async createdUser(dto: CreateUserDto) {
+  async createUser(dto: CreateUserDto) {
     const userEntity = await this.userRepository.create({ ...dto });
     await this.userRepository.save(userEntity);
     return userEntity.toJson();
