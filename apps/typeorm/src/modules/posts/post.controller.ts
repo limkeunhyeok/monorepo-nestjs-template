@@ -11,6 +11,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGurad } from '../auth/auth.guard';
+import { CreateCommentDto } from '../comments/dto/create-comment.dto';
+import { UpdateCommentDto } from '../comments/dto/update-comment.dto';
 import { UserInToken } from '../users/user.decorator';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -50,5 +52,43 @@ export class PostController {
   @Delete('/:postId')
   async deletePost(@Param('postId', ParseIntPipe) postId: number) {
     return await this.postService.deletePost(postId);
+  }
+
+  @Post('/:postId/comments')
+  async createComments(
+    @Param('postId', ParseIntPipe) postId: number,
+    @UserInToken('userId') userId: number,
+    @Body() dto: CreateCommentDto,
+  ) {
+    return await this.postService.createComments(postId, userId, dto);
+  }
+
+  @Get('/:postId/comments')
+  async getCommentsByPostId(@Param('postId', ParseIntPipe) postId: number) {
+    return await this.postService.getCommentsByPostId(postId);
+  }
+
+  @Put('/:postId/comments/:commentId')
+  async updateComments(
+    @Param('postId', ParseIntPipe) postId: number,
+    @Param('commentId', ParseIntPipe) commentId: number,
+    @UserInToken('userId') userId: number,
+    @Body() dto: UpdateCommentDto,
+  ) {
+    return await this.postService.updateComments(
+      postId,
+      userId,
+      commentId,
+      dto,
+    );
+  }
+
+  @Delete('/:postId/comments/:commentId')
+  async deleteComments(
+    @Param('postId', ParseIntPipe) postId: number,
+    @Param('commentId', ParseIntPipe) commentId: number,
+    @UserInToken('userId') userId: number,
+  ) {
+    return await this.postService.deleteComments(postId, userId, commentId);
   }
 }

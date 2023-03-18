@@ -1,5 +1,5 @@
 import { CommentEntity } from '@common/modules/typeorm';
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { CreateCommentDto } from './dto/create-comment.dto';
@@ -22,16 +22,28 @@ export class CommentService {
     return commentEntity;
   }
 
-  async createComment(dto: CreateCommentDto) {
-    const commentEntity = await this.commentRepository.create({ ...dto });
+  async createComment(postId: number, authorId: number, dto: CreateCommentDto) {
+    const commentEntity = await this.commentRepository.create({
+      postId,
+      authorId,
+      ...dto,
+    });
     await this.commentRepository.save(commentEntity);
     return commentEntity;
   }
 
-  async updateComment(dto: UpdateCommentDto) {
+  async updateComment(
+    authorId: number,
+    commentId: number,
+    dto: UpdateCommentDto,
+  ) {
     const hasComment = await this.commentRepository.findOneByOrFail({
-      id: dto.commentId,
+      id: commentId,
     });
+
+    if (authorId !== hasComment.authorId) {
+      throw new ForbiddenException('Access is denied.');
+    }
 
     const updatedComment = await this.commentRepository.create({
       ...hasComment,
