@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { serverConfig } from './config';
+import { UserModule } from './modules/users/user.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { serverConfig } from './config';
         pass: serverConfig.mongoPass,
       },
     ),
+    UserModule,
   ],
 })
 export class AppModule implements NestModule {

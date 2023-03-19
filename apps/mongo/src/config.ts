@@ -5,7 +5,7 @@ import * as path from 'path';
 const { error } = config({
   path: path.resolve(
     process.cwd(), // __dirname을 사용하면 실행하는 파일의 절대경로인 /dist/apps...를 나타낸다
-    `./apps/prisma/.env.${process.env.NODE_ENV || 'dev'}`,
+    `./apps/mongo/.env.${process.env.NODE_ENV || 'dev'}`,
   ),
 });
 

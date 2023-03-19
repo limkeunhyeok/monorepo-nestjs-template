@@ -1,10 +1,13 @@
 import { AllExceptionsFilter, DtoValidationPipe } from '@common/core';
 import { ApiDocsModule, LogContext, winstonLogger } from '@common/modules';
 import { NestFactory } from '@nestjs/core';
+import mongoose from 'mongoose';
 import { AppModule } from './app.module';
 import { serverConfig } from './config';
 
 async function bootstrap() {
+  mongoose.set('debug', true);
+
   const app = await NestFactory.create(AppModule);
 
   app.useGlobalFilters(new AllExceptionsFilter());
@@ -20,6 +23,7 @@ async function bootstrap() {
     winstonLogger.log({
       message: `Server starting on port ${serverConfig.port}`,
       category: LogContext.Initializer,
+      context: 'App',
     });
   });
 }

@@ -1,4 +1,4 @@
-import { winstonLogger } from '@common/modules';
+import { LogContext, winstonLogger } from '@common/modules';
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 
@@ -18,7 +18,11 @@ export class LoggingMiddleware implements NestMiddleware {
         statusCode,
       });
 
-      winstonLogger.log(logMessage);
+      winstonLogger.log({
+        context: 'HTTP',
+        category: LogContext.HttpResponse,
+        message: logMessage,
+      });
     });
 
     next();
