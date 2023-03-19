@@ -5,7 +5,7 @@ import * as path from 'path';
 const { error } = config({
   path: path.resolve(
     process.cwd(), // __dirname을 사용하면 실행하는 파일의 절대경로인 /dist/apps...를 나타낸다
-    `./apps/typeorm/.env.${process.env.NODE_ENV || 'dev'}`,
+    `./apps/prisma/.env.${process.env.NODE_ENV || 'dev'}`,
   ),
 });
 
@@ -19,18 +19,18 @@ if (error) {
 
 class ServerConfig {
   nodeEnv = process.env.NODE_ENV || 'dev';
-  port = Number(process.env.PORT) || 3000;
+  port = Number(process.env.PORT) || 3001;
 
-  serverName = process.env.SERVER_NAME || 'typeorm-template';
+  serverName = process.env.SERVER_NAME || 'mongoose-template';
   serverVersion = process.env.SERVER_VERSION || '1.0.0';
   serverDesc =
-    process.env.SERVER_DESC || 'This server is a template using typeorm.';
+    process.env.SERVER_DESC || 'This server is a template using mongoose.';
 
-  typeormDb = process.env.TYPEORM_DB || 'typeorm-template';
-  typeormPort = Number(process.env.TYPEORM_PORT) || 5432;
-  typeormHost = process.env.TYPEORM_HOST || '127.0.0.1';
-  typeormUser = process.env.TYPEORM_USER || 'root';
-  typeormPass = process.env.TYPEORM_PASS || 'password';
+  mongoHost = process.env.MONGO_HOST || 'localhost';
+  mongoPort = Number(process.env.MONGO_PORT) || 27017;
+  mongoUser = process.env.MONGO_USER || 'root';
+  mongoPass = process.env.MONGO_PASS || 'password';
+  mongoDb = process.env.MONGO_DB || 'mongo-template';
 
   jwtSecret = process.env.JWT_SECRET || 'keyboardCat';
 }
