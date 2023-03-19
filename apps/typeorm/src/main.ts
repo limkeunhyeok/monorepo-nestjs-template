@@ -1,5 +1,5 @@
 import { AllExceptionsFilter, DtoValidationPipe } from '@common/core';
-import { LogContext, winstonLogger } from '@common/modules';
+import { ApiDocsModule, LogContext, winstonLogger } from '@common/modules';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { serverConfig } from './config';
@@ -9,6 +9,12 @@ async function bootstrap() {
 
   app.useGlobalFilters(new AllExceptionsFilter());
   app.useGlobalPipes(new DtoValidationPipe());
+
+  ApiDocsModule.register(app, {
+    title: serverConfig.serverName,
+    description: serverConfig.serverDesc,
+    version: serverConfig.serverVersion,
+  });
 
   await app.listen(serverConfig.port, () => {
     winstonLogger.log({

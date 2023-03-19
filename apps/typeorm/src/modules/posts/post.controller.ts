@@ -10,6 +10,7 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { AuthGurad } from '../auth/auth.guard';
 import { CreateCommentDto } from '../comments/dto/create-comment.dto';
 import { UpdateCommentDto } from '../comments/dto/update-comment.dto';
@@ -18,6 +19,7 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostService } from './post.service';
 
+@ApiTags('/posts')
 @Controller('/posts')
 @UseGuards(AuthGurad([Role.ADMIN, Role.MEMBER]))
 export class PostController {

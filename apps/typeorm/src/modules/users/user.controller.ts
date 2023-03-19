@@ -10,11 +10,13 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { AuthGurad } from '../auth/auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 
+@ApiTags('/users')
 @Controller('/users')
 @UseGuards(AuthGurad([Role.ADMIN]))
 export class UserController {

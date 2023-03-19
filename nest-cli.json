@@ -5,6 +5,7 @@
   "monorepo": true,
   "root": "apps/typeorm",
   "compilerOptions": {
+    "plugins": ["@nestjs/swagger"],
     "webpack": true,
     "tsConfigPath": "apps/typeorm/tsconfig.app.json"
   },

@@ -1,10 +1,12 @@
 import { Role } from '@common/modules/typeorm';
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { AuthGurad } from './auth.guard';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 
+@ApiTags('/auth')
 @Controller('/auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
