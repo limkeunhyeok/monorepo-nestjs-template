@@ -1,21 +1,47 @@
 import { User } from '@common/modules/mongoose';
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { FilterQuery } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectModel(User.name) private readonly userModel: Model<User>,
-  ) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   async getUsers() {
-    return await this.userModel.find({});
+    const users = await this.userRepository.findUsers();
+    return users.map((user) => this.toJson(user));
   }
 
-  async createUser(dto: CreateUserDto) {
-    const user = await this.userModel.create(dto);
+  async getUserByQuery(query: FilterQuery<User>) {
+    const user = await this.userRepository.findUserByQuery(query);
     return user;
+  }
+
+  async createUser({ email, password, username, role }: CreateUserDto) {
+    const user = await this.userRepository.createUser({
+      email,
+      password,
+      username,
+      role,
+    });
+    return user;
+  }
+
+  async updateUser(userId: string, dto: UpdateUserDto) {
+    const user = await this.userRepository.updateUser(userId, dto);
+    return user;
+  }
+
+  async deleteUser(userId: string) {
+    const user = await this.userRepository.deleteUser(userId);
+    return user;
+  }
+
+  toJson(user: User) {
+    const json = { ...user.toJSON() };
+    delete json.password;
+    return json;
   }
 }
