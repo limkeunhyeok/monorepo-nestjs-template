@@ -1,14 +1,18 @@
 import { AllExceptionsFilter, DtoValidationPipe } from '@common/core';
 import { ApiDocsModule, LogContext, winstonLogger } from '@common/modules';
 import { NestFactory } from '@nestjs/core';
-import mongoose from 'mongoose';
+import { json, urlencoded } from 'express';
 import { AppModule } from './app.module';
 import { serverConfig } from './config';
 
 async function bootstrap() {
-  mongoose.set('debug', true);
-
   const app = await NestFactory.create(AppModule);
+
+  app.enableCors({ origin: '*' });
+
+  // request body size 설정
+  app.use(json({ limit: '10mb' }));
+  app.use(urlencoded({ limit: '10mb', extended: true }));
 
   app.useGlobalFilters(new AllExceptionsFilter());
   app.useGlobalPipes(new DtoValidationPipe());

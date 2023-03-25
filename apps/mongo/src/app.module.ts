@@ -1,11 +1,13 @@
 import { LoggingMiddleware } from '@common/core';
+import { initializeDatabase } from '@common/modules/mongoose/initialize';
 import {
   MiddlewareConsumer,
   Module,
   NestModule,
   RequestMethod,
 } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
+import { InjectConnection, MongooseModule } from '@nestjs/mongoose';
+import { Connection } from 'mongoose';
 import { serverConfig } from './config';
 import { UserModule } from './modules/users/user.module';
 
@@ -23,6 +25,12 @@ import { UserModule } from './modules/users/user.module';
   ],
 })
 export class AppModule implements NestModule {
+  @InjectConnection() private connection: Connection;
+
+  async onModuleInit() {
+    await initializeDatabase(this.connection);
+  }
+
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(LoggingMiddleware)

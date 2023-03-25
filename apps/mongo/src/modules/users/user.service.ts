@@ -11,7 +11,7 @@ export class UserService {
 
   async getUsers() {
     const users = await this.userRepository.findUsers();
-    return users.map((user) => this.toJson(user));
+    return users.map((user) => user.toJson());
   }
 
   async getUserByQuery(query: FilterQuery<User>) {
@@ -37,11 +37,5 @@ export class UserService {
   async deleteUser(userId: string) {
     const user = await this.userRepository.deleteUser(userId);
     return user;
-  }
-
-  toJson(user: User) {
-    const json = { ...user.toJSON() };
-    delete json.password;
-    return json;
   }
 }

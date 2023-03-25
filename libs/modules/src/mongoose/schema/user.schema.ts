@@ -32,6 +32,16 @@ export class User extends Document {
 
   @Prop({ default: false })
   isLock?: boolean;
+
+  toJson: () => Omit<User, 'password'>;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
+
+UserSchema.methods.toJson = function (this: User) {
+  const json = { ...this.toJSON() };
+
+  delete json.password;
+
+  return json;
+};
