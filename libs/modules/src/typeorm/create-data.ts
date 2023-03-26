@@ -8,7 +8,11 @@ export const createData = async (instance: DataSource, nodeEnv: string) => {
     await instance.initialize();
 
     await instance.manager.transaction(async (manager) => {
-      const users = await manager.create(UserEntity, [
+      const userRepository = manager.getRepository(UserEntity);
+      const postRepository = manager.getRepository(PostEntity);
+      const commentRepository = manager.getRepository(CommentEntity);
+
+      const users = await userRepository.create([
         {
           email: 'admin@example.com',
           password: 'password',
@@ -22,25 +26,11 @@ export const createData = async (instance: DataSource, nodeEnv: string) => {
           role: Role.MEMBER,
         },
       ]);
-      await manager.save(users);
-      // const users = await manager.save(UserEntity, [
-      //   {
-      //     email: 'admin@example.com',
-      //     password: 'password',
-      //     username: 'admin',
-      //     role: Role.ADMIN,
-      //   },
-      //   {
-      //     email: 'member@example.com',
-      //     password: 'password',
-      //     username: 'member',
-      //     role: Role.MEMBER,
-      //   },
-      // ]);
+      await userRepository.save(users);
 
       const [admin, member] = users;
 
-      const posts = await manager.save(PostEntity, [
+      const posts = await postRepository.save([
         {
           title: 'admin post tilte',
           contents: 'admin post contents',
@@ -55,7 +45,7 @@ export const createData = async (instance: DataSource, nodeEnv: string) => {
 
       const [adminPost, memberPost] = posts;
 
-      await manager.save(CommentEntity, [
+      await commentRepository.save([
         {
           contents: 'admin comment contents',
           authorId: admin.id,
