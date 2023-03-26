@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import * as bcrypt from 'bcrypt';
 import { Document } from 'mongoose';
 import { schemaOptions } from './schema-options';
 
@@ -34,6 +35,8 @@ export class User extends Document {
   isLock?: boolean;
 
   toJson: () => Omit<User, 'password'>;
+
+  comparedPassword: (attempt: string) => boolean;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
@@ -44,4 +47,8 @@ UserSchema.methods.toJson = function (this: User) {
   delete json.password;
 
   return json;
+};
+
+UserSchema.methods.comparedPassword = function (this: User, attempt: string) {
+  return bcrypt.compareSync(attempt, this.password);
 };

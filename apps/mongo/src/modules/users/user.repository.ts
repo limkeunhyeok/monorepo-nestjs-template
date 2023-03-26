@@ -4,7 +4,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import { FilterQuery, Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserRepository {
@@ -42,7 +41,7 @@ export class UserRepository {
     return user;
   }
 
-  async updateUser(userId: string, dto: UpdateUserDto) {
+  async updateUser(userId: string, dto: Partial<User>) {
     const user = await this.userModel.findByIdAndUpdate(userId, dto, {
       new: true,
     });

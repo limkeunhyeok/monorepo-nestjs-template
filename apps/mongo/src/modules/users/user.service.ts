@@ -2,7 +2,6 @@ import { User } from '@common/modules/mongoose';
 import { Injectable } from '@nestjs/common';
 import { FilterQuery } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { UserRepository } from './user.repository';
 
 @Injectable()
@@ -29,7 +28,7 @@ export class UserService {
     return user;
   }
 
-  async updateUser(userId: string, dto: UpdateUserDto) {
+  async updateUser(userId: string, dto: Partial<User>) {
     const user = await this.userRepository.updateUser(userId, dto);
     return user;
   }
