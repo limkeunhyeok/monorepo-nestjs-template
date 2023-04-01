@@ -15,7 +15,7 @@ export class Post extends Document {
   published: boolean;
 
   @Prop({ required: true, type: Types.ObjectId, ref: 'user' })
-  authorId: number;
+  authorId: string;
 
   @Prop({ type: [CommentSchema] })
   comments: [Comment];

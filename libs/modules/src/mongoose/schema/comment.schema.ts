@@ -11,10 +11,10 @@ export class Comment extends Document {
   published: boolean;
 
   @Prop({ required: true, type: Types.ObjectId })
-  authorId: number;
+  authorId: string;
 
   @Prop({ required: true, type: Types.ObjectId })
-  postId: number;
+  postId: string;
 }
 
 export const CommentSchema = SchemaFactory.createForClass(Comment);
