@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-import { Comment, CommentSchema } from './comment.schema';
 import { schemaOptions } from './schema-options';
 
 @Schema(schemaOptions)
@@ -17,8 +16,8 @@ export class Post extends Document {
   @Prop({ required: true, type: Types.ObjectId, ref: 'user' })
   authorId: string;
 
-  @Prop({ type: [CommentSchema] })
-  comments: [Comment];
+  @Prop({ type: [Types.ObjectId] })
+  comments: [Types.ObjectId];
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);
