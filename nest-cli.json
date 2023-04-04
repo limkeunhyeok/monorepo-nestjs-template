@@ -28,6 +28,15 @@
         "tsConfigPath": "apps/mongo/tsconfig.app.json"
       }
     },
+    "jenkins-test": {
+      "type": "application",
+      "root": "apps/jenkins-test",
+      "entryFile": "main",
+      "sourceRoot": "apps/jenkins-test/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/jenkins-test/tsconfig.app.json"
+      }
+    },
     "core": {
       "type": "library",
       "root": "libs/core",

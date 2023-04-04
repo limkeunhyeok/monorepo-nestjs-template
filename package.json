@@ -12,6 +12,7 @@
     "start": "cross-env NODE_ENV=dev nest start",
     "start:typeorm": "cross-env NODE_ENV=dev nest start typeorm",
     "start:mongo": "cross-env NODE_ENV=dev nest start mongo",
+    "start:jenkins-test": "cross-env NODE_ENV=dev nest start jenkins-test",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
