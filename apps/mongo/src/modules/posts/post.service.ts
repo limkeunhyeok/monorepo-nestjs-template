@@ -2,6 +2,8 @@ import { Post } from '@common/modules/mongoose';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { FilterQuery } from 'mongoose';
 import { CommentService } from '../comments/comment.service';
+import { CreateCommentDto } from '../comments/dto/create-comment.dto';
+import { UpdateCommentDto } from '../comments/dto/update-comment.dto';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostRepository } from './post.repository';
@@ -41,18 +43,59 @@ export class PostService {
     return await this.postRepository.deletePost(postId);
   }
 
-  async createComment(postId: string, authorId: string, contents: string) {
+  async createComment(postId: string, authorId: string, dto: CreateCommentDto) {
     const hasPost = await this.postRepository.findPostByQuery({ _id: postId });
 
     const comment = await this.commentService.createComment({
       postId,
       authorId,
-      contents,
+      ...dto,
     });
 
     hasPost.comments.push(comment._id);
     await hasPost.save();
 
+    return comment;
+  }
+
+  async getCommentsByPostId(postId: string) {
+    const comments = await this.commentService.getCommentByQuery({ postId });
+    return comments;
+  }
+
+  async updateComment(
+    postId: string,
+    authorId: string,
+    commentId: string,
+    dto: UpdateCommentDto,
+  ) {
+    await this.postRepository.findPostByQuery({ _id: postId });
+
+    const comment = await this.commentService.updateComment({
+      authorId,
+      commentId,
+      ...dto,
+    });
+
+    return comment;
+  }
+
+  async deleteComment(postId: string, authorId: string, commentId: string) {
+    const hasPost = await this.postRepository.findPostByQuery({ id: postId });
+
+    const hasComment = await this.commentService.getCommentByQuery({
+      id: commentId,
+      authorId,
+    });
+
+    const comment = await this.commentService.deleteComment(hasComment.id);
+
+    const deletedComments = hasPost.comments.filter(
+      (comment) => comment._id.toString() !== commentId,
+    );
+
+    hasPost.comments = deletedComments;
+    await hasPost.save();
     return comment;
   }
 }

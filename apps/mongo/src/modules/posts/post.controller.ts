@@ -8,6 +8,8 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { CreateCommentDto } from '../comments/dto/create-comment.dto';
+import { UpdateCommentDto } from '../comments/dto/update-comment.dto';
 import { UserInToken } from '../users/user.decorator';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -46,7 +48,40 @@ export class PostController {
   }
 
   @Delete('/:postId')
-  async deleteUser(@Param('postId') postId: string) {
+  async deletePost(@Param('postId') postId: string) {
     return this.postService.deletePost(postId);
+  }
+
+  @Post('/:postId/comments')
+  async createComment(
+    @Param('postId') postId: string,
+    @UserInToken('userId') userId: string,
+    @Body() dto: CreateCommentDto,
+  ) {
+    return await this.postService.createComment(postId, userId, dto);
+  }
+
+  @Get('/:postId/comments')
+  async getCommentsByPostId(@Param('postId') postId: string) {
+    return await this.postService.getCommentsByPostId(postId);
+  }
+
+  @Put('/:postId/comments/:commentId')
+  async updateComment(
+    @Param('postId') postId: string,
+    @Param('commentId') commentId: string,
+    @UserInToken('userId') userId: string,
+    @Body() dto: UpdateCommentDto,
+  ) {
+    return await this.postService.updateComment(postId, userId, commentId, dto);
+  }
+
+  @Delete('/:postId/comments/:commentId')
+  async deleteComment(
+    @Param('postId') postId: string,
+    @Param('commentId') commentId: string,
+    @UserInToken('userId') userId: string,
+  ) {
+    return await this.postService.deleteComment(postId, userId, commentId);
   }
 }

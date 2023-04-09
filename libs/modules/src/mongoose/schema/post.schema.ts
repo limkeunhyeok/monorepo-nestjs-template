@@ -17,7 +17,7 @@ export class Post extends Document {
   authorId: string;
 
   @Prop({ type: [Types.ObjectId] })
-  comments: [Types.ObjectId];
+  comments: Types.ObjectId[];
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);
