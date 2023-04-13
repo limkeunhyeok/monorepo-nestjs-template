@@ -9,6 +9,8 @@ import {
 import { InjectConnection, MongooseModule } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 import { serverConfig } from './config';
+import { AuthModule } from './modules/auth/auth.module';
+import { PostModule } from './modules/posts/post.module';
 import { UserModule } from './modules/users/user.module';
 
 @Module({
@@ -21,7 +23,9 @@ import { UserModule } from './modules/users/user.module';
         pass: serverConfig.mongoPass,
       },
     ),
+    AuthModule,
     UserModule,
+    PostModule,
   ],
 })
 export class AppModule implements NestModule {
